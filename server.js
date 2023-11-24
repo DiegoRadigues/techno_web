@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 // Init app avec Express
 const app = express();
 // Port 3001 pour le serveur
-const port = 3001;
+const port = 3000;
 
 // Liste de tâches de base
 let tasks = ["Faire valider mon exercice", "Résussir le test"];
