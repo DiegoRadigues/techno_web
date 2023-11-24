@@ -1,0 +1,88 @@
+<!-- Début du doc HTML -->
+<!DOCTYPE html>
+<html lang='fr'>
+<head>
+    <!-- Encodage des caractères -->
+    <meta charset='UTF-8'>
+    <!-- Rendre le site responsive -->
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <!-- Titre de la page -->
+    <title>Gestion d'un refuge pour animaux</title>
+    <!-- Lien vers le fichier CSS -->
+    <link rel='stylesheet' href='Labo2.4.css'>
+</head>
+<body>
+    <!-- En-tête de la page -->
+    <header>
+        <!-- Titre principal -->
+        <h1>Gestion d'un refuge pour animaux (partie 4)</h1>
+    </header>
+    <!-- Contenu principal -->
+    <main>
+        <!-- Section pour ajouter un animal -->
+        <section class='project-card'>
+            <h2>Ajouter un animal</h2>
+            <!-- Formulaire d'ajout -->
+            <form id='animalForm'>
+                <!-- Choix du type d'animal -->
+                <label for='type'>Type:</label>
+                <select id='type'>
+                    <option value='chien'>Chien</option>
+                    <option value='chat'>Chat</option>
+                </select>
+                <!-- Champ pour le nom -->
+                <label for='name'>Nom:</label>
+                <input type='text' id='name' required>
+                <!-- Champ pour l'âge -->
+                <label for='age'>Age:</label>
+                <input type='number' id='age' required>
+                <!-- Bouton pour ajouter -->
+                <button type='button' id='addAnimal'>Ajouter</button>
+            </form>
+        </section>
+        <!-- Section pour afficher la liste des animaux -->
+        <section class='project-card'>
+            <h2>Liste des animaux</h2>
+            <!-- Liste vide au départ, remplie avec JS -->
+            <ul id='animalList'></ul>
+        </section>
+        <!-- Section pour afficher les moyennes d'âge -->
+        <section class='project-card'>
+            <h2>Moyennes d'âge</h2>
+            <!-- Moyenne d'âge pour les chiens -->
+            <p>Chien: <span id='dogAverage'>0</span> ans</p>
+            <!-- Moyenne d'âge pour les chats -->
+            <p>Chat: <span id='catAverage'>0</span> ans</p>
+        </section>
+
+        <section class='project-card'>
+            <h2>Explication Détaillée du DOM</h2>
+            <p>Le DOM (Document Object Model) est une interface de programmation pour les documents HTML et XML. Il représente la page web sous forme d'une structure arborescente de nœuds, où chaque nœud correspond à une partie du document, comme un élément, un attribut, ou du texte. Le DOM permet aux langages de programmation, comme JavaScript, d'interagir avec le contenu, la structure et le style de la page web.</p>
+            
+            <p>Dans notre code, le DOM est utilisé pour :</p>
+            <ul>
+                <li><strong>Création et Manipulation des Éléments :</strong> Par exemple, <code>document.createElement('li')</code> crée un nouvel élément <code>&lt;li&gt;</code>. On définit son contenu textuel pour afficher les informations de l'animal, et on l'ajoute à la liste d'animaux dans le HTML.</li>
+                <li><strong>Sélection et Accès aux Éléments du DOM :</strong> On utilise <code>document.getElementById</code> pour sélectionner les éléments du formulaire et accéder à leurs valeurs.</li>
+                <li><strong>Écouteurs d'Événements :</strong> Un gestionnaire d'événements est attaché au bouton 'Ajouter' pour créer et afficher un nouvel animal lorsque le bouton est cliqué.</li>
+                <li><strong>Mise à Jour Dynamique du Contenu :</strong> La liste des animaux et les moyennes d'âge sont mises à jour dynamiquement en fonction des interactions de l'utilisateur.</li>
+                <li><strong>Calcul et Affichage des Moyennes d'Âge :</strong> On calcule et affiche l'âge moyen des animaux par type.</li>
+                <li><strong>Initialisation avec des Données Test :</strong> Des animaux test sont ajoutés à la liste pour démontrer la fonctionnalité.</li>
+            </ul>
+    
+            <p>Cette utilisation du DOM rend notre page web interactive et réactive, permettant une mise à jour dynamique du contenu en fonction des interactions de l'utilisateur.</p>
+        
+            <p>Pour plus d'informations <a href="https://grafikart.fr/tutoriels/javascript-dom-2071">Manipuler le DOM</a></p>
+
+
+        </section>
+
+    </main>
+    <!-- Pied de page -->
+    <footer>
+
+        <p>© 2023 Diego de Radiguès. Tous droits réservés.</p>
+    </footer>
+    <!-- Lien vers le fichier JS -->
+    <script src='Labo2.4.js'></script>
+</body>
+</html>

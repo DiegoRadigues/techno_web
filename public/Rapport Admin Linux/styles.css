@@ -1,0 +1,150 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #2C3E50;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    border-bottom: 3px solid #2980B9;
+}
+
+main {
+    flex: 1 0 auto;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+
+section {
+    margin-bottom: 20px;
+}
+
+h2 {
+    border-bottom: 2px solid #2980B9;
+    padding-bottom: 10px;
+}
+
+h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    padding: 5px 0;
+}
+
+pre {
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.copy-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+
+footer {
+    background-color: #2C3E50;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    flex-shrink: 0; /* Cette ligne est importante pour le sticky footer */
+}
+
+.centered-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.centered-image img {
+    display: block;
+    max-width: 100%;  /* Pour s'assurer que l'image ne dépasse pas sa boîte conteneur */
+}
+.image-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contained-image {
+    max-width: 100%; /* Assurez-vous que l'image ne dépasse pas la largeur de son conteneur */
+    height: auto; /* Maintient le rapport d'aspect de l'image */
+}
+.centered-image-container {
+    display: flex;
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center;     /* Centrer verticalement */
+}
+
+.centered-image {
+    max-width: 100%; /* Assurez-vous que l'image ne dépasse pas la largeur de son conteneur */
+    height: auto;    /* Maintient le rapport d'aspect de l'image */
+}
+
+section {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px; /* Pour donner des coins arrondis à chaque boîte */
+}
+
+.alert-box {
+  border: 2px solid red;
+  background-color: #ffecec;
+  padding: 15px;
+  margin: 20px 0;
+}
+.alert-box h3 {
+  color: #d8000c;
+}
+.table-of-contents {
+    background-color: none;
+    border-left: 4px solid #0056b3;
+    padding: 20px;
+    margin: 20px 0;
+}
+.table-of-contents h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+.table-of-contents ul {
+    list-style: none;
+    padding: 0;
+}
+.table-of-contents li {
+    padding: 5px 0;
+}
+.table-of-contents li a {
+    color:none;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.table-of-contents li a:hover {
+    color: #0056b3;
+}
+
+
+

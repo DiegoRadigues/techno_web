@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide de gestion d'un serveur Linux</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Administration Linux</h1>
+    </header>
+    <main>
+
+
+        <!DOCTYPE html>
+        <html lang="fr">
+        <head>
+            <meta charset="UTF-8">
+            <title>Table des Matières</title>
+            <link rel="stylesheet" href="styles.css">
+        </head>
+        <body>
+        
+        <section id="Tale des matières">
+        <div class="table-of-contents">
+            <h2>Table des Matières</h2>
+            <ul>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#connexion">Connexion à la Machine Virtuelle</a></li>
+                <li><a href="#commandes">Bible des Lignes de Commandes Linux</a></li>
+                <li><a href="#partition-system">Partitionnement et Système de Fichiers</a></li>
+                <li><a href="#permissions">Utilisateurs et permissions</a></li>
+                <li><a href="#accesSSH">Accès avec clef SSH</a></li>
+                <li><a href="#UFW">Uncomplicated Firewall</a></li>
+                <li><a href="#Fail2ban">Fail2ban</a></li>
+                <li><a href="#references">References</a></li>
+
+            </ul>
+        </div>
+        
+        </section>
+
+            <section id="Introduction">
+            <h2>Introduction</h2>
+            <p>
+              Ce rapport a été rédigé dans le cadre du cours d'Administration Linux de l'ECAM (3e bachelier - génie électrique). Il constitue à la fois une synthèse personnelle sur la matière abordée en classe et une partie intégrante de l'évaluation continue. Il témoigne des manipulations effectuées et des concepts assimilés tout au long du module.
+               Dans un esprit d'amélioration continue, l'auteur reste ouvert à toute suggestion et/ou correction de cette synthèse et est contactable à l'adresse suivante <a href="mailto:20342@ecam.be">20342@ecam.be</a>. 
+
+            </p>
+            <p>
+              Dans un double objectif pédagogique et pratique, ce rapport a été rédigé sous deux formats : un site web en HTML, CSS, et JavaScript pour concrétiser l'apprentissage en développement web, et une version PDF pour une présentation plus formelle qui sera remise comme évaluation. Pour profiter de toutes les fonctionnalités et de la mise en page optimale, se référer à la version web.
+            </p>
+            </section>
+          
+            <section id="connexion">
+            <h2>Connexion à la Machine Virtuelle</h2>
+            <p>La machine virtuelle numéro 130, hébergée sur les serveurs de l'ECAM, est accessible à distance via le protocole SSH qui permet une gestion sécurisée du serveur à distance. La connection se fait à partir de PuTTY, un client de terminal SSH open source pour Windows OS.</p>
+            <p>
+                Le protocole SSH (Secure Shell) est une méthode standard pour sécuriser les communications réseau. En utilisant SSH, vous pouvez accéder à des machines distantes, exécuter des commandes et déplacer des fichiers, tout cela avec une sécurité renforcée. Les données envoyées sur le réseau sont cryptées, ce qui empêche les écoutes indiscrètes et les attaques potentielles.
+            </p>
+              
+            <div class="image-container">
+                <img src="illustations/Putty.png" alt="Interface Putty" class="responsive-image" />
+                <img src="illustations/Login.png" alt="Interface de connexion" class="responsive-image" />
+            </div>
+            
+            <p>Après avoir encodé le Host name, le Port et le type de connexion, nous pouvons accéder à ma machine virtuelle. Celle-ci demande un login et un password, initialement admin-3be et ECAMecam. Le password sera changé au moyen de la commande passwd et le nom d'utilisateurs sera remplacé par Diego.</p>
+        
+            <p>
+                Le nom de domaine fonctionne comme un pointeur vers une adresse IP spécifique qui est l'identifiant numérique d'un serveur sur le réseau. Le système de noms de domaine (DNS) traduit ce nom (plus simple à retenir) en une adresse IP que les ordinateurs peuvent comprendre.
+            </p>
+            <p>
+                Dans l'exemple <code>pat.infolab.ecam.be</code>, nous avons une structure hiérarchique, <code>be</code> indique le domaine de premier niveau correspondant à la Belgique, <code>ecam</code> est bien évidement l'établissement, <code>infolab</code> désigne le laboratoire d'informatique, et <code>pat</code> est le nom attribué à un serveur en particulier.
+            </p>
+            
+            <p>
+                Le port est un identifiant numérique qui est utilisé pour permettre à plusieurs services réseau de fonctionner sur un seul serveur sans interférence. Les ports les plus utilisés sont les ports <code>80</code> pour HTTP ou le port <code>443</code> pour HTTPS. Pour plus d'informations, se référer au cours d'introduction aux résaux.
+            </p>
+        
+        
+        </section>
+        
+            
+        </section>
+        
+
+        </section>
+        <section id="commandes">
+            <h2>Bible des Lignes de Commandes Linux</h2>
+            <h3>Auto-complétion avec "Tab"</h3>
+            <p>L'auto-complétion est une fonctionnalité qui permet de compléter automatiquement les commandes, options ou noms de fichiers en appuyant sur la touche "Tab".</p>
+            <h3>Manuel (man)</h3>
+            <p>Utilisez la commande <code>man</code> suivie du nom de la commande pour obtenir un manuel détaillé sur son utilisation.</p>
+            <h3>Mise à jour</h3>
+            <pre><code>apt-get update && apt-get upgrade -y</code><span class="copy-icon" onclick="copyToClipboard('apt-get update && apt-get upgrade -y')">📋</span></pre>
+            <ul>
+                <li><code>apt-get update</code>: Met à jour la liste des paquets.</li>
+                <li><code>apt-get install [nom du paquet]</code>: Installe un paquet.</li>
+                <li><code>apt-get upgrade -y</code>: Met à niveau les paquets installés. Le flag -y confirme automatiquement toutes les invites.</li>
+            </ul>
+            <h3>Navigation dans l'Arborescence</h3>
+            <ul>
+                <li><code>pwd</code>: Affiche le répertoire de travail actuel.</li>
+                <li><code>cd</code>: Change le répertoire de travail.</li>
+                <li><code>cd ..</code>: Remonte au répertoire parent.</li>
+                <li><code>cd /chemin/vers/le/dossier</code>: Se déplace vers le dossier spécifié.</li>
+            </ul>
+
+            <h3>Lister le Contenu d’un Dossier</h3>
+            <ul>
+                <li><code>ls</code>: Liste le contenu du répertoire.</li>
+                <li><code>ls -l</code>: Affiche en format long.</li>
+                <li><code>ls -a</code>: Inclut les fichiers cachés.</li>
+            </ul>
+
+            <h3>Création de Dossiers et Fichiers</h3>
+            <ul>
+                <li><code>mkdir nom_du_dossier</code>: Crée un nouveau dossier.</li>
+                <li><code>touch nom_du_fichier</code>: Crée un nouveau fichier vide.</li>
+            </ul>
+
+            <h3>Manipulation de Fichiers</h3>
+            <ul>
+                <li><code>mv</code>: Déplace ou renomme des fichiers/dossiers.</li>
+                <li><code>cp</code>: Copie des fichiers/dossiers.</li>
+            </ul>
+
+            <h3>Éditer un Fichier</h3>
+            <ul>
+                <li><code>vi</code> ou <code>vim</code>: Éditeur de texte en mode console.</li>
+                <li><code>nano</code>: on préferera cette commande car moins de raccourcis.</li>
+            </ul>
+
+            <h3>Afficher le Contenu d'un Fichier</h3>
+            <ul>
+                <li><code>cat nom_du_fichier</code>: Affiche le contenu complet.</li>
+                <li><code>more nom_du_fichier</code>: Affiche le contenu page par page.</li>
+                <li><code>head nom_du_fichier</code>: Affiche les premières lignes.</li>
+                <li><code>tail nom_du_fichier</code>: Affiche les dernières lignes.</li>
+            </ul>
+
+            <h3>Supprimer Fichiers et Dossiers</h3>
+            <ul>
+                <li><code>rm -r nom_du_fichier</code>: Supprime un fichier.</li>
+                <li><code>rmdir nom_du_dossier</code>: Supprime un dossier (doit être vide).</li>
+            </ul>
+
+            <h3>Enchaînement de Commandes</h3>
+            <ul>
+                <li><code>;</code>: Sépare des commandes exécutées successivement.</li>
+                <li><code>&&</code>: Exécute la seconde commande si la première est réussie.</li>
+                <li><code>||</code>: Exécute la seconde commande si la première échoue.</li>
+            </ul>
+
+            <h3>Bash Script</h3>
+            <p>Combinez plusieurs commandes dans un fichier script pour automatiser des tâches répétitives.</p>
+
+            <h3>Autres Commandes Utiles</h3>
+            <ul>
+                <li><code>echo</code>: Affiche un message ou la valeur d'une variable.</li>
+                <li><code>&gt;</code> et <code>&gt;&gt;</code>: Redirige la sortie d'une commande vers un fichier.</li>
+                <li><code>read</code>: Attend une entrée de l'utilisateur.</li>
+                <li><code>date</code>: Affiche la date et l’heure courantes.</li>
+                <li><code>#</code>: Commence un commentaire.</li>
+            </ul>
+
+            <h3>Exercice Pratique 1</h3>
+            <p>Créez un petit fichier test dans votre dossier personnel</p>
+            <pre><code>touch testfile.txt</code><span class="copy-icon" onclick="copyToClipboard('touch testfile.txt')">📋</span></pre>
+            <p>Renommez le, déplacez le dans un répertoir “mes_fichiers” et allez dans ce répertoire en une seule commande!</p>
+            <pre><code>mv testfile.txt newname.txt && mkdir -p mes_fichiers && mv newname.txt mes_fichiers/ && cd mes_fichiers</code><span class="copy-icon" onclick="copyToClipboard('mv testfile.txt newname.txt && mkdir -p mes_fichiers && mv newname.txt mes_fichiers/ && cd mes_fichiers')">📋</span></pre>
+            <p>Lisez le contenu du fichier sans l’éditer</p>
+            <pre><code>cat newname.txt</code><span class="copy-icon" onclick="copyToClipboard('cat newname.txt')">📋</span></pre>
+            <p>Supprimez le, remontez dans votre dossier personnel et supprimez le répertoire “mes_fichiers” en une seule commande!</p>
+            <pre><code>rm newname.txt && cd .. && rmdir mes_fichiers</code><span class="copy-icon" onclick="copyToClipboard('rm newname.txt && cd .. && rmdir mes_fichiers')">📋</span></pre>
+
+            <h3>Exercice Pratique 2</h3>
+            <p>Écrivez un script qui demande votre nom, puis enregistre la date et l’heure actuelles dans un fichier chaque fois qu'il est exécuté.</p>
+            <p>Exécutez le script plusieurs fois, puis vérifiez le contenu du fichier pour voir les enregistrements de la date et de l’heure.</p>
+
+            <h4>2.1 Création du script</h4>
+            <p>Créez un fichier nommé monscript.sh et ajoutez les commandes nécessaires pour qu'il puisse demander le nom de l'utilisateur et l'enregistrer dans un fichier log avec la date et l'heure actuelles.</p>
+            <pre><code>echo '#!/bin/bash' > monscript.sh
+echo 'echo "Quel est votre nom?"' >> monscript.sh
+echo 'read nom' >> monscript.sh
+echo 'echo "Bonjour $nom"' >> monscript.sh
+echo 'echo "$nom a lancé le script le $(date)" >> log.txt' >> monscript.sh</code><span class="copy-icon" onclick="copyToClipboard('...')">📋</span></pre>
+
+            <h4>2.2 Rendre le script exécutable</h4>
+            <p>Changez les permissions du fichier pour le rendre exécutable.</p>
+            <pre><code>chmod +x monscript.sh</code><span class="copy-icon" onclick="copyToClipboard('chmod +x monscript.sh')">📋</span></pre>
+
+            <h4>2.3 Exécution du script</h4>
+            <p>Il vous demandera votre nom, vous saluera dans le terminal, et enregistrera votre nom avec la date et l'heure dans un fichier log.txt.</p>
+            <pre><code>./monscript.sh</code><span class="copy-icon" onclick="copyToClipboard('./monscript.sh')">📋</span></pre>
+
+            <h4>2.4 Lecture du fichier log</h4>
+            <pre><code>cat log.txt</code><span class="copy-icon" onclick="copyToClipboard('cat log.txt')">📋</span></pre>
+            <div class="centered-image-container">
+                <img src="illustations/Script1.png" alt="resltat" class="centered-image" />
+            </div>
+
+
+            <h4>2.5 Eventuellement suppression du script et du fichier log</h4>
+            <pre><code>rm monscript.sh
+rm log.txt</code><span class="copy-icon" onclick="copyToClipboard('rm monscript.sh\nrm log.txt')">📋</span></pre>
+
+            <h3>Exercice pratique 3</h3>
+            <p>Créer un script de mise à jour automatique à 02h00 UTC</p>
+
+            <h4>Création et édition du script</h4>
+            <pre><code>sudo nano /usr/local/bin/update_upgrade_script.sh</code><span class="copy-icon" onclick="copyToClipboard('sudo nano /usr/local/bin/update_upgrade_script.sh')">📋</span></pre>
+
+            <h4>Mise à jour des listes de paquets et mise à niveau en silence et enregistrement de la date et de l'heure dans le fichier log</h4>
+            <pre><code>#!/bin/bash
+sudo apt-get update -y > /dev/null 2>&1
+sudo apt-get upgrade -y > /dev/null 2>&1
+echo "$(date)" >> /var/log/update_upgrade.log</code><span class="copy-icon" onclick="copyToClipboard('...')">📋</span></pre>
+
+            <h4>Rendre le script exécutable</h4>
+            <pre><code>sudo chmod +x /usr/local/bin/update_upgrade_script.sh</code><span class="copy-icon" onclick="copyToClipboard('sudo chmod +x /usr/local/bin/update_upgrade_script.sh')">📋</span></pre>
+
+            <h4>Ouverture de crontab (en sudo pour avoir tous les droits pour les mises à jour)</h4>
+            <pre><code>sudo crontab -e</code><span class="copy-icon" onclick="copyToClipboard('sudo crontab -e')">📋</span></pre>
+
+            <h4>Execution à 02h00 UTC tous les jours, pour obtenir la syntaxe adéquate cf crontab guru (site web)</h4>
+            <pre><code>0 2 * * * /usr/local/bin/update_upgrade_script.sh
+            </code><span class="copy-icon" onclick="copyToClipboard('0 2 * * * /usr/local/bin/update_upgrade_script.sh')">📋</span></pre>
+            <p> Dans l'ordre on trouve : <br>
+                <strong>Minute :</strong> La minute de l'heure à laquelle la commande doit s'exécuter. Les valeurs possibles vont de 0 à 59.<br>
+                <strong>Heure :</strong> L'heure à laquelle la commande doit s'exécuter. Les valeurs possibles vont de 0 à 23, où 0 représente minuit.<br>
+                <strong>Jour du mois :</strong> Le jour du mois où la commande doit s'exécuter. Les valeurs possibles vont de 1 à 31.<br>
+                <strong>Mois :</strong> Le mois de l'année pendant lequel la commande doit s'exécuter. Les valeurs vont de 1 (janvier) à 12 (décembre).<br>
+                <strong>Jour de la semaine :</strong> Le jour de la semaine où la commande doit s'exécuter. Les valeurs vont de 0 (dimanche) à 6 (samedi).<br>
+                <strong>* :</strong> Un astérisque représente toutes les valeurs possibles pour ce champ. Par exemple, une astérisque dans le champ des heures signifie "à chaque heure".
+            </p>
+              
+            <p>Exécution manuelle du script pour tester son fonctionnement :</p>
+            <pre><code>sudo /usr/local/bin/update_upgrade_script.sh</code><span class="copy-icon" onclick="copyToClipboard('sudo /usr/local/bin/update_upgrade_script.sh')">📋</span></pre>
+
+            <h4>Ouverture du fichier log</h4>
+            <pre><code>cat /var/log/update_upgrade.log</code><span class="copy-icon" onclick="copyToClipboard('cat /var/log/update_upgrade.log')">📋</span></pre>
+            <div class="centered-image-container">
+                <img src="illustations/Log.png" alt="script" class="centered-image" />
+            </div> 
+            
+            <div class="centered-image-container">
+                <img src="illustations/Script2.png" alt="resultat" class="centered-image" />
+            </div>
+
+            <h4>Supression du fichier log</h4>
+            <pre><code>sudo echo "" > /var/log/update_upgrade.log</code><span class="copy-icon" onclick='copyToClipboard("sudo echo \"\" > /var/log/update_upgrade.log")'>📋</span></pre>
+
+
+
+        </section>
+
+        <section id="partition-system">
+            <h2>Partitionnement et Système de Fichiers</h2>
+            
+            <h3>Aperçu</h3>
+            <p>Le partitionnement et le système de fichiers sont deux composantes cruciales pour la gestion et l'organisation des données sur un disque dur. Le partitionnement réfère à la division d'un disque dur en sections isolées, chacune fonctionnant comme une unité séparée. Le système de fichiers, quant à lui, est la méthode utilisée pour stocker et organiser les fichiers sur une partition.</p>
+        
+            <h3>Partitionnement Manuel vs Automatique</h3>
+            <p>Manuel : Il est parfois nécessaire d’opter pour un partitionnement manuel, surtout pour des configurations spécifiques. Par exemple :</p>
+            <ul>
+                <li>/var : Contient les logs, partitionnée séparément pour éviter de saturer le disque.</li>
+                <li>/usr : Utilisé dans les machines avec de nombreux utilisateurs différents.</li>
+                <li>/home : Pour avoir les dossiers personnels sur une autre partition.</li>
+            </ul>
+            <p>Le but est principalement de protéger la racine /. La partition swap est souvent mentionnée, mais elle est principalement utile pour l'hibernation de la machine, un cas non typique pour un serveur.</p>
+            <p>Automatique : Suffisant dans la majorité des cas et peut être révisé ultérieurement selon les besoins spécifiques.</p>
+        
+            <h3>Le Système de Fichier</h3>
+            <p>Il détermine comment les données sont lues, écrites, et organisées sur le disque. Différents systèmes de fichiers ont des caractéristiques et des avantages spécifiques, influençant la performance et la sécurité des données.</p>
+        
+            <h3>La Hiérarchie des Fichiers</h3>
+            <p>Le système de fichiers Linux est structuré selon une hiérarchie bien définie. Pour plus de détails <a href="https://refspecs.linuxfoundation.org/FHS_3.0/fhs/index.html">Filesystem Hierarchy Standard</a>.</p>
+            <ul>
+                <li><code>/bin/</code> : contient des exécutables binaires essentiels pour le démarrage du système et des commandes nécessaires pour l'utilisateur root et les autres utilisateurs.</li>
+                <li><code>/boot/</code> : contient les fichiers nécessaires au démarrage du système, comme le noyau Linux, les images initrd et les fichiers de configuration du chargeur de démarrage.</li>
+                <li><code>/dev/</code> : contient des fichiers de périphériques qui représentent les périphériques matériels du système.</li>
+                <li><code>/etc/</code> : contient des fichiers de configuration système et des scripts pour initialiser le système.</li>
+                <li><code>/home/</code> : contient les répertoires personnels des utilisateurs, où ils stockent leurs fichiers personnels.</li>
+                <li><code>/lib/</code> et <code>/lib64/</code> : contiennent des bibliothèques partagées et des modules du noyau nécessaires au démarrage du système et à l'exécution des commandes binaires.</li>
+                <li><code>/media/</code> : un point de montage pour les dispositifs de stockage amovibles, comme les clés USB et les disques durs externes.</li>
+                <li><code>/mnt/</code> : utilisé pour monter les systèmes de fichiers temporaires.</li>
+                <li><code>/opt/</code> : contient des logiciels et des add-ons optionnels qui ne font pas partie de l'installation standard.</li>
+                <li><code>/proc/</code> : un système de fichiers virtuel qui fournit des informations sur les processus en cours d'exécution et le système.</li>
+                <li><code>/root/</code> : le répertoire personnel de l'utilisateur root.</li>
+                <li><code>/run/</code> : contient des informations sur le système depuis le démarrage.</li>
+                <li><code>/sbin/</code> : contient des binaires système essentiels, principalement destinés à être utilisés par l'utilisateur root.</li>
+                <li><code>/srv/</code> : contient des données spécifiques au site qui sont servies par le système.</li>
+                <li><code>/tmp/</code> : un répertoire temporaire où les fichiers sont stockés temporairement.</li>
+                <li><code>/usr/</code> : contient des binaires, des bibliothèques, de la documentation, etc., pour tous les programmes utilisateur.</li>
+                <li><code>/var/</code> : contient des fichiers variables, comme les fichiers journaux et les bases de données.</li>
+            </ul>
+            
+        
+            <h3>LVM (Logical Volume Manager)</h3>
+            <h4>Avantages</h4>
+            <ul>
+                <li>Élimine les limitations souvent associées aux partitions traditionnelles (primaire, étendue, etc.).</li>
+                <li>Flexibilité dans la gestion des données.</li>
+                <li>Permet de conserver de l'espace libre pour un ajout facile à n’importe quel volume.</li>
+                <li>Le redimensionnement des volumes est presque sans risque.</li>
+            </ul>
+            
+            <h4>Inconvénients</h4>
+            <ul>
+                <li>Si un volume physique échoue, tous les volumes logiques qui l'utilisent sont perdus. Une solution consiste à utiliser LVM sur des disques en RAID pour une sécurité accrue.</li>
+            </ul>
+            
+            <p>Pour plus d'informations <a href="https://www.linuxtricks.fr/wiki/lvm-sous-linux-volumes-logiques">LVM sous Linux.</a></p>
+            
+            
+        </section>
+
+        <section id="permissions">
+            <h2>Utilisateurs et permissions</h2>
+        
+            <h3>1. Types d’Utilisateurs :</h3>
+            <ul>
+                <li><strong>Régulier</strong> : Ils ont des droits d'accès de base et se reconnaissent par <code>$</code> au niveau du prompt.</li>
+                <li><strong>Root ou Superuser</strong> : Ils ont tous les droits et privilèges, identifiés par <code>#</code> au niveau du prompt.</li>
+                <li><strong>Service</strong> : Associé à une application spécifique et non utilisable en console.</li>
+            </ul>
+        
+            <h3>2. Principe d'Accès :</h3>
+            <ul>
+                <li>Il est recommandé de se connecter en tant qu'utilisateur régulier et d'obtenir des droits root temporairement au besoin pour éviter des actions accidentelles pouvant affecter le système.</li>
+            </ul>
+        
+            <h3>3. Gestion des Utilisateurs et Groupes :</h3>
+            <ul>
+                <li>Les utilisateurs et groupes sont gérés à l'aide de commandes comme <code>sudo adduser</code>, <code>sudo userdel</code>, <code>sudo addgroup</code>, et <code>sudo usermod</code>.</li>
+            </ul>
+        
+                <h3>4. Permissions :</h3>
+                <p>Elles sont définies pour le propriétaire, le groupe et les autres utilisateurs, codées en binaire et contrôlées par les commandes <code>chmod</code> et <code>chown</code>.</p>
+            
+                <h4>Représentation symbolique:</h4>
+                <ul>
+                    <li><strong>r:</strong> read (lecture)</li>
+                    <li><strong>w:</strong> write (écriture)</li>
+                    <li><strong>x:</strong> execute (exécution)</li>
+                </ul>
+            
+                <h4>Types d'utilisateurs pour lesquels les droits sont définis :</h4>
+                <ul>
+                    <li>Propriétaire (<strong>u: user</strong>)</li>
+                    <li>Groupe (<strong>g: group</strong>)</li>
+                    <li>Autres (<strong>o: other</strong>)</li>
+                </ul>
+            
+                <h4>Représentation numérique/octal:</h4>
+                <ul>
+                    <li><strong>4</strong> correspond à r (lecture)</li>
+                    <li><strong>2</strong> correspond à w (écriture)</li>
+                    <li><strong>1</strong> correspond à x (exécution)</li>
+                </ul>
+            
+                <h4>Combinaison des droits :</h4>
+                <ul>
+                    <li><strong>rwx</strong> = 4 + 2 + 1 = 7</li>
+                    <li><strong>rw-</strong> = 4 + 2 = 6</li>
+                    <li><strong>r-x</strong> = 4 + 1 = 5</li>
+                    <li><strong>r--</strong> = 4</li>
+                </ul>
+
+
+                <h4>5. ACL (Access Control Lists) :</h4>
+                <p>Pour des permissions plus fines, installez <code>acl</code> et configurez les droits d'accès pour plusieurs utilisateurs et groupes.</p>
+                
+                
+                <h3>Résolution des exercices :</h3>
+                
+                <h4>Exercice 1 : Création d'Utilisateurs</h4>
+                <p><strong>Créer les utilisateurs Master (super utilisateur) et Padawan (régulier) :</strong></p>
+                <pre><code>sudo adduser master
+sudo adduser padawan</code><span class="copy-icon" onclick="copyToClipboard('sudo adduser master\nsudo adduser padawan')">📋</span></pre>
+                
+                <h4>Exercice 2 : Création d’un Groupe</h4>
+                <p><strong>Créer un groupe "team" et ajouter les utilisateurs et root au groupe :</strong></p>
+                <pre><code>sudo addgroup team
+sudo usermod -a -G team root
+sudo usermod -a -G team master
+sudo usermod -a -G team padawan</code><span class="copy-icon" onclick="copyToClipboard('sudo addgroup team\nsudo usermod -a -G team root\nsudo usermod -a -G team master\nsudo usermod -a -G team padawan')">📋</span></pre>
+                <p>Ces lignes ajoutent les utilisateurs "root", "master" et "padawan" au groupe "team". L'option -a -G est utilisée pour ajouter les utilisateurs au groupe sans les retirer de leurs groupes existants. Cela permet de rassembler différents types d'utilisateurs au sein d'un même groupe pour une gestion et des permissions communes.</p>
+                
+                <h4>Exercice 3 : Création de Répertoires avec Permissions</h4>
+                <p><strong>Créer un dossier "share" avec des sous-dossiers pour "team", "master", et "padawan" et attribuer les permissions et propriétaires appropriés :</strong></p>
+                <pre><code>sudo mkdir -p /home/share/{team,master,padawan}
+sudo chown master:team /home/share
+sudo chmod 700 /home/share                    
+sudo chown master:team /home/share/master
+sudo chown padawan:team /home/share/padawan
+sudo chmod 750 /home/share/master
+sudo chmod 750 /home/share/padawan
+sudo chmod 770 /home/share/team</code><span class="copy-icon" onclick="copyToClipboard('sudo mkdir -p /home/share/{team,master,padawan}\nsudo chown master:team /home/share/master\nsudo chown padawan:team /home/share/padawan\nsudo chmod 750 /home/share/master\nsudo chmod 750 /home/share/padawan\nsudo chmod 770 /home/share/team')">📋</span></pre>
+                <p>Crée un répertoire principal "share" et trois sous-répertoires "team", "master" et "padawan" dans le répertoire "/home". L'option -p est utilisée pour créer des répertoires parents si nécessaire.</p>
+                <p>Change le propriétaire et le groupe des répertoires "master" et "padawan". "master:team" signifie que l'utilisateur "master" est le propriétaire et "team" est le groupe propriétaire.</p>
+                
+                <h5>Justification :</h5>
+
+                <p><strong>Pour /home/share:</strong></p>
+                <p>Droits : rwx --x ---<br>
+                Numérique : 771</p>
+                <p>Le propriétaire (master) a des droits complets (rwx = 7)<br>
+                Le groupe (team) peut traverser le répertoire mais ne peut ni lire ni écrire (--x = 1).<br>
+                Les autres n'ont aucun droit (--- = 0)</p>
+
+
+
+                <p><strong>Pour /home/share/team:</strong></p>
+                <p>Droits : rwx rwx ---<br>
+                Numérique : 771</p>
+                <p>Le propriétaire (master) a des droits complets (rwx = 7)<br>
+                Le groupe (team) a également des droits complets (rwx = 7)<br>
+                Les autres n'ont aucun droit (--- = 0)</p>
+                
+                <p><strong>Pour /home/share/master:</strong></p>
+                <p>Droits : rwx r-x ---<br>
+                Numérique : 750</p>
+                <p>Le propriétaire (master) a des droits complets (rwx = 7)<br>
+                Le groupe (team) peut lire et exécuter mais ne peut pas écrire (r-x = 5)<br>
+                Les autres n'ont aucun droit (--- = 0)</p>
+                
+                <p><strong>Pour /home/share/padawan:</strong></p>
+                <p>Droits : rwx r-x ---<br>
+                Numérique : 750</p>
+                <p>Le propriétaire (padawan) a des droits complets (rwx = 7)<br>
+                Le groupe (team) peut lire et exécuter mais ne peut pas écrire (r-x = 5)<br>
+                Les autres n'ont aucun droit (--- = 0)</p>
+
+                <div class="centered-image-container">
+                    <img src="illustations/permissions.png" alt="permissions" class="centered-image" />
+                </div>
+
+
+                <h4>Exercice 4 : Access Control Lists (ACL)</h4>
+                <p><strong>Installer ACL et configurer des permissions détaillées :</strong></p>
+                <pre><code>sudo apt-get install acl
+setfacl -m u:username:rwx /path/to/file</code><span class="copy-icon" onclick="copyToClipboard('sudo apt-get install acl\nsetfacl -m u:username:rwx /path/to/file')">📋</span></pre>
+                <p>Remplacez "username" par le nom d'utilisateur et "/path/to/file" par le chemin du fichier pour lequel vous souhaitez définir l'ACL.</p>
+                
+                <h4>Exercice 5 : Créer un Dossier de Backup</h4>
+                <p><strong>Créer un dossier "backup", assurez-vous qu'il soit en lecture seule pour tous sauf root et créer un script pour le backup du dossier "share" :</strong></p>
+                <pre><code>sudo mkdir /home/backup
+sudo chmod 744 /home/backup</code><span class="copy-icon" onclick="copyToClipboard('sudo mkdir /home/backup\nsudo chmod 744 /home/backup')">📋</span></pre>
+
+                <p><strong>Pour /home/backup:</strong></p>
+                <p>Droits : rwx r-- r--<br>
+                Numérique : 744</p>
+                <p>Le propriétaire (padawan) a des droits complets (rwx = 7)<br>
+                    Le propriétaire (root) a des droits complets (rwx = 7)<br>
+                    Le groupe et les autres peuvent lire le contenu du répertoire (r-- = 4), mais ne peuvent ni écrire ni exécuter.<br>
+                    Les permissions permettent à root de modifier le répertoire, tandis que les autres utilisateurs peuvent seulement voir ce qui est dans /home/backup, sans pouvoir y ajouter ou retirer des fichiers.<br>
+                Les autres n'ont aucun droit (--- = 0)</p>
+
+                <pre><code>#!/bin/bash
+# Définir le chemin de sauvegarde
+chemin_sauvegarde="/home/backup"
+# Définir le chemin source
+chemin_source="/home/share"
+# Créer un nom de fichier de sauvegarde avec la date
+nom_fichier_sauvegarde="share-backup-$(date +%F).tar.gz"
+# Créer la sauvegarde en utilisant tar
+tar -czf "${chemin_sauvegarde}/${nom_fichier_sauvegarde}" "${chemin_source}"
+</code><span class="copy-icon" onclick="copyToClipboard('#!/bin/bash\n# Définir le chemin de sauvegarde\nchemin_sauvegarde=&quot;/home/backup&quot;\n# Définir le chemin source\nchemin_source=&quot;/home/share&quot;\n# Créer un nom de fichier de sauvegarde avec la date\nnom_fichier_sauvegarde=&quot;share-backup-$(date +%F).tar.gz&quot;\n# Créer la sauvegarde en utilisant tar\ntar -czf &quot;${chemin_sauvegarde}/${nom_fichier_sauvegarde}&quot; &quot;${chemin_source}&quot;')">📋</span></pre>
+                    
+            </section>
+
+            <section id="accesSSH">
+            <h2>Accès avec clef SSH</h2>
+            <ol>
+                <li>Utilisation de Puttygen pour générer une paire de clés de 1024 bits
+                <div class="centered-image-container">
+                <img src="illustations/ClefSSH.png" alt="ClefSSH">
+                </div>
+                </li>
+                <li>Sur le serveur distant, création du répertoire <code>~/.ssh</code> s'il n'existe pas déjà
+                <pre><code>mkdir -p ~/.ssh</code><span class="copy-icon" onclick="copyToClipboard('mkdir -p ~/.ssh')">📋</span></pre>
+
+                <pre><code>echo "copié_collé_de_la_publicKey_ci_dessus" &gt;&gt; ~/.ssh/authorized_keys</code><span class="copy-icon" onclick="copyToClipboard('echo &quot;copié_collé_de_la_publicKey_ci_dessus&quot; &gt;&gt; ~/.ssh/authorized_keys')">📋</span></pre>
+                    
+                <li>Configuration des permissions pour le répertoire <code>~/.ssh</code> et le fichier <code>~/.ssh/authorized_keys</code> et ajustement du propriétaire des fichiers
+                <pre><code>chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys
+chown $USER:$USER ~/.ssh -R</code><span class="copy-icon" onclick="copyToClipboard('chmod 700 ~/.ssh\nchmod 600 ~/.ssh/authorized_keys\nchown $USER:$USER ~/.ssh -R')">📋</span></pre>
+                </li>
+                <li>Ajout de la clé privée au profil PuTTY sous "Connection" &gt; "SSH" &gt; "Auth" &gt; "Credential" &gt; "Private key"
+                <div class="centered-image-container">
+                <img src="illustations/PuttyKey.png" alt="PuttyKey">
+                </div>
+                </li>
+                <li>Ouverture de la session
+                <div class="centered-image-container">
+                <img src="illustations/KeyLog.png" alt="KeyLog">
+                </div>
+                </li>
+            </ol>
+            </section>
+
+            <section id="UFW">
+            <h2>UFW - Uncomplicated Firewall</h2>
+            <p>UFW est un outil de configuration de pare-feu sous Linux.</p>
+            <p>Un pare-feu, ou <em>firewall</em> en anglais, est un dispositif de sécurité réseau qui surveille et contrôle le trafic entrant et sortant d'un réseau en fonction de règles de sécurité prédéfinies. Un pare-feu peut être matériel, logiciel (le cas de UFW), ou une combinaison des deux.</p>
+            <h3>Installation</h3>
+            <pre><code>sudo apt install ufw</code><span class="copy-icon" onclick="copyToClipboard('sudo apt install ufw')">📋</span></pre>
+            <h3>Activation</h3>
+            <pre><code>sudo ufw enable</code><span class="copy-icon" onclick="copyToClipboard('sudo ufw enable')">📋</span></pre>
+            
+            <div class="centered-image-container">
+                <img src="illustations/UFW.png" alt="UFW status" class="centered-image" />
+            </div>
+
+            <pre><code>sudo ufw status verbose</code><span class="copy-icon" onclick="copyToClipboard('sudo ufw status verbose')">📋</span></pre>
+            <h3>Commandes utiles</h3>
+            <pre><code>sudo ufw allow 22 #autorise le port 22
+sudo ufw allow ssh #autorise ssh
+sudo ufw deny 25 #refuse le port 25
+sudo ufw allow from 192.168.0.20 to any port 22 #autorise ssh seulement depuis ip XXX
+sudo ufw deny from 192.168.0.20 #refuse trafic ip XXX
+sudo ufw delete allow 22 #suppression de règles
+sudo ufw logging on #logs stockés dans /var/log/ufw.log</code><span class="copy-icon" onclick="copyToClipboard('sudo ufw allow 22\nsudo ufw allow ssh\nsudo ufw deny 25\nsudo ufw allow from 192.168.0.20 to any port 22\nsudo ufw deny from 192.168.0.20\nsudo ufw delete allow 22\nsudo ufw logging on')">📋</span></pre>
+
+
+                <div class="alert-box">
+                  <h3>ATTENTION : Ne sciez pas la branche sur laquelle vous êtes assis !</h2>
+                  <p>Lors de la configuration de vos règles UFW, soyez extrêmement prudent pour ne pas bloquer votre accès SSH. Si vous configurez mal une règle et fermez le port SSH (par défaut 22), vous risquez de perdre l'accès à votre serveur et de vous retrouver dans l'incapacité de le gérer à distance.</p>
+                  <p>Avant de procéder à des modifications, assurez-vous de :</p>
+                  <ul>
+                    <li>Connaître le port utilisé par votre service SSH. Par défaut, il s'agit du port 22, mais il peut avoir été modifié.</li>
+                    <li>Avoir une session SSH ouverte en parallèle que vous ne fermerez pas. Cela vous permettra de revenir en arrière si les nouvelles règles bloquent votre accès.</li>
+                    <li>Utiliser la commande <code>ufw allow</code> pour maintenir l'accès au port SSH. Par exemple :</li>
+                  </ul>
+                  <pre><code>ufw allow 22/tcp</code><span class="copy-icon" onclick="copyToClipboard('ufw allow 22/tcp')">📋</span></pre>
+                </div>
+
+            </section>
+
+            <section id="Fail2ban">
+                <h2>Fail2ban</h2>
+                <p>Fail2Ban est un outil de sécurité qui protège le serveur contre des tentatives d'intrusion répétées. Lorsqu'il repère plusieurs échecs d'authentification, il peut bannir l'IP de l'attaquant. Ceci permet de se protéger efficacement contre les attaques par force brute.</p>
+                
+                <h3>Installation</h3>
+                <pre><code>sudo apt-get install fail2ban</code><span class="copy-icon" onclick="copyToClipboard('sudo apt-get install fail2ban')">📋</span></pre>
+                
+                <h3>Commandes utiles</h3>
+                <pre><code>sudo service fail2ban start
+sudo service fail2ban stop
+sudo service fail2ban restart
+sudo systemctl enable fail2ban #active automatiquement au demarrage
+</code><span class="copy-icon" onclick="copyToClipboard('sudo service fail2ban start\nsudo service fail2ban stop\nsudo service fail2ban restart')">📋</span></pre>
+                
+                <pre><code>sudo fail2ban-client status
+sudo fail2ban-client status ssh #pour voir les tentatives de connection</code><span class="copy-icon" onclick="copyToClipboard('sudo fail2ban-client status\nsudo fail2ban-client status ssh')">📋</span></pre>
+                
+                <pre><code>sudo fail2ban-client set [JAIL_NAME] unbanip [IP_ADDRESS] #unban une IP</code><span class="copy-icon" onclick="copyToClipboard('sudo fail2ban-client set [JAIL_NAME] unbanip [IP_ADDRESS]')">📋</span></pre>
+                
+                <pre><code>sudo service fail2ban stop #arret et desinstallation
+sudo systemctl disable fail2ban
+sudo apt-get purge fail2ban</code><span class="copy-icon" onclick="copyToClipboard('sudo service fail2ban stop\nsudo systemctl disable fail2ban\nsudo apt-get purge fail2ban')">📋</span></pre>
+                
+                <h3>Application : protection du port SSH</h3>
+                <p>Copier le fichier de configuration principal:</p>
+                <pre><code>sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local</code><span class="copy-icon" onclick="copyToClipboard('sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local')">📋</span></pre>
+                
+                <p>Copier le fichier jail :</p>
+                <pre><code>sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local</code><span class="copy-icon" onclick="copyToClipboard('sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local')">📋</span></pre>
+                
+                <p>Ouvrir le fichier jail.local pour le modifier :</p>
+                <pre><code>sudo nano /etc/fail2ban/jail.local</code><span class="copy-icon" onclick="copyToClipboard('sudo nano /etc/fail2ban/jail.local')">📋</span></pre>
+                
+                <p>Contenu du fichier jail (exemples):</p>
+                <pre><code>[ssh]
+enabled  = true  # Active la surveillance pour SSH.
+port     = ssh   # Port que SSH utilise (par défaut c'est 22).
+filter   = sshd  # Motif à rechercher dans les logs (utilise le filtre sshd).
+logpath  = /var/log/auth.log  # Fichier de log à surveiller.
+maxretry = 3     # Le nombre d'échecs avant bannissement.
+bantime  = 3600  # Durée (s) pendant laquelle l'IP sera bannie (ici 1 heure).</code></pre>
+                    
+<div class="centered-image-container">
+    <img src="illustations/fail2ban_sshd.png" alt="fal2ban sshd" class="centered-image" />
+</div>
+
+                <p>Démarrer Fail2ban</p>
+                <pre><code>sudo service fail2ban start</code><span class="copy-icon" onclick="copyToClipboard('sudo service fail2ban start')">📋</span></pre>
+                
+                <p>Assurer le démarrage automatique</p>
+                <pre><code>sudo systemctl enable fail2ban</code><span class="copy-icon" onclick="copyToClipboard('sudo systemctl enable fail2ban')">📋</span></pre>
+                
+                <p>Eventuellement vérifier le status</p>
+                <pre><code>sudo fail2ban-client status ssh</code><span class="copy-icon" onclick="copyToClipboard('sudo fail2ban-client status ssh')">📋</span></pre>
+              
+                <h4>test :</h4>
+                <p>En mettant un bantime très court on peut tester la protection en se faisant banir nous-même (ici avec un maxtetry=5 et bantime=60)</p>
+    
+                <div class="centered-image-container">
+                    <img src="illustations/Fail.png" alt="fail2ban jail" class="centered-image" />
+                </div>
+
+
+            </section>
+
+            <section>
+            <h2>Conclusion</h2>
+                <p>Ce rapport du cours d'administration linux reprend les différentes manipulations executées ainsi que leur explication détailée.
+                    Nous avons abordé divers sujets, tels que la gestion des lignes de commande Linux, le partitionnement du système de fichiers, la configuration des utilisateurs et des permissions, l'accès sécurisé via SSH, la mise en place du pare-feu UFW et la sécurité renforcée avec Fail2ban.
+                    Ces connaissances constituent un point de départ de l'intérêt pour la gestion de serveurs. La prochaine étape consistera à construire son propre serveur et à y héberger un site web personnel.</p>
+            </section>
+
+              
+
+              <section id="references">
+                <h2>Références</h2>
+                <ul>
+                  <li><a href="https://linux.goffinet.org/administration/le-shell/la-ligne-de-commande/" target="_blank">Le shell - La ligne de commande</a></li>
+                  <li><a href="https://linux.goffinet.org/administration/le-shell/premier-script-shell" target="_blank">Premier Script Shell</a></li>
+                  <li><a href="https://linuxhint.com/30_bash_script_examples" target="_blank">30 Bash Script Examples</a></li>
+                  <li><a href="https://www.linux.com/training-tutorials/writing-simple-bash-script" target="_blank">Writing a Simple Bash Script</a></li>
+                  <li><a href="https://www.oreilly.com/library/view/bash-cookbook/0596526784/ch15s14.html" target="_blank">Bash Cookbook</a></li>
+                  <li><a href="https://helpdeskgeek.com/linux-tips/shell-script-backup-directory-linux" target="_blank">Shell Script to Backup Directory on Linux</a></li>
+                  <li><a href="https://crontab.guru/" target="_blank">Crontab Guru</a></li>
+                  <li><a href="https://doc.ubuntu-fr.org/permissions" target="_blank">Doc Ubuntu-Fr Permissions</a></li>
+                  <li><a href="https://www.ssh.com/academy/ssh/putty/windows/puttygen" target="_blank">Generate a key pair with puttygen.exe</a></li>
+                  <li><a href="https://wiki.ubuntu.com/UncomplicatedFirewall" target="_blank">Ubuntu wiki Uncomplicated Firewall</a></li>
+                  <li><a href="https://doc.ubuntu-fr.org/ufw" target="_blank">Doc Ubuntu-Fr UFW</a></li>
+                  <li><a href="https://doc.ubuntu-fr.org/fail2ban" target="_blank">Doc Ubuntu-Fr Fail2ban</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=OekaaLmwttc&list=PLjwdMgw5TTLUnvhOKLcpCG8ORQsfE7uB4&index=3" target="_blank">Mise en place d'un serveur web - Commandes de base (video)</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=lXOdDal6qos&list=PLjwdMgw5TTLUnvhOKLcpCG8ORQsfE7uB4&index=5" target="_blank">Mise en place d'un serveur web - SSH (video)</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=-rmK50PbqCY">Mise en place d'un serveur web - Fail2ban (video)</a></li>
+                
+                  
+                </ul>
+              </section>
+              
+              
+        
+        
+    </main>
+    <footer>
+        <p>2023 © Diego de Radiguès</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

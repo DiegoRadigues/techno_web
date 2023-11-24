@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste de Tâches</title>
+    <link rel='stylesheet' href='/styles.css'>
+</head>
+<body>
+    <header>
+        <h1>Liste de tâches</h1>
+    </header>
+    <main>
+        <section>
+            <form action="/addtask" method="post">
+                <input type="text" name="task" placeholder="Ajouter une nouvelle tâche">
+                <button type="submit">Ajouter Tâche</button>
+            </form>
+            <ul>
+                <% tasks.forEach(function(task, index){ %>
+                    <li>
+                        <%= task %> 
+                        <a href="/deletetask/<%= index %>">Supprimer</a>
+                    </li>
+                <% }); %>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Synthèse de l'exercice</h2>
+            <p>Cette exo est un exemple de serveur web utilisant Node.js avec Express. :</p>
+            <ul>
+                <li><strong>Initialisation :</strong> Le serveur est créé en utilisant Express, un framework pour Node.js facilitant la gestion des routes et des réponses.</li>
+                <li><strong>Middleware :</strong> 'body-parser' est utilisé pour traiter les données des formulaires, permettant d'ajouter facilement de nouvelles tâches.</li>
+                <li><strong>Gestion des Routes :</strong> Plusieurs routes sont définies pour différentes actions (afficher, ajouter, supprimer des tâches).</li>
+                <li><strong>Rendu Dynamique :</strong> EJS, un moteur de rendu, est utilisé pour générer des pages HTML dynamiques basées sur les données des tâches.</li>
+                <li><strong>Interaction Utilisateur :</strong> Les utilisateurs interagissent avec l'app via un formulaire pour ajouter des tâches et des liens pour les supprimer.</li>
+            </ul>
+        </section>
+
+
+
+    </main>
+    <footer>
+        <p>© 2023 Diego de Radiguès. Tous droits réservés.</p>
+    </footer>   
+</body>
+</html>

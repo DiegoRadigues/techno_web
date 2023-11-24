@@ -1,0 +1,88 @@
+<!DOCTYPE html> 
+<html lang='fr'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'> 
+    <title>Fetch Planets</title>
+    <link rel='stylesheet' href='../../styles.css'>
+
+    <script>
+      // ID actuel de la planète
+      let currentPlanetId = 1;
+
+      // Fonction pour charger les données de la planète
+      function loadPlanet(planetId) {
+          fetch('https://laboweb.ecam.be/planet/' + planetId)
+              .then(response => {
+                  // Si pb avec la réponse, envoie une erreur
+                  if (!response.ok) {
+                      throw new Error('bug réseau...');
+                  }
+                  // Transforme la réponse en JSON
+                  return response.json();
+              })
+              .then(data => {
+                  // Ajoute le nom de la planète au div 'destination'
+                  const planetNameElement = document.getElementById('planet-name');
+                  planetNameElement.textContent = data.name;
+                  // Ajoute la distance à la balise 'p' avec id 'distance'
+                  document.getElementById('distance').textContent = "Distance : " + data.distance;
+                  // Met l'URL de l'image dans la balise 'img' avec id 'image'
+                  document.getElementById('image').src = data.image;
+                  
+                  // Ajoute les autres informations de la planète
+                  let extraInfo = '<p>Diamètre : ' + data.diameter + '</p>' +
+                                  '<p>Étoile(s) : ' + data.star + '</p>' +
+                                  '<p>Lunes : ' + data.moons + '</p>';
+                  document.getElementById('extra-info').innerHTML = extraInfo;
+              })
+              .catch(error => {
+                  // Affiche erreur en console si pb avec fetch
+                  console.error('buuuuug fetch', error);
+              });
+      }
+
+      // Quand la page charge
+      window.addEventListener("load", function() {
+          loadPlanet(currentPlanetId); // Charge la première planète
+
+          // Attache l'événement de clic au titre de la planète
+          document.getElementById('planet-name').addEventListener('click', function() {
+              currentPlanetId++; // Incrémente l'ID de la planète
+              loadPlanet(currentPlanetId); // Charge la planète suivante
+          });
+      });
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <h1>Exercice API</h1>
+    </header>
+
+    <main>
+        <section>
+            <h1>Destination</h1>
+            <div id="destination">
+                <!-- Ajoute un 'id' au titre de la planète pour le clic -->
+                <h3 id="planet-name">Planète</h3>
+                <!-- Info planète ici -->
+            </div>
+            <p id="distance">Distance :</p>
+            <img id="image" width="200">
+            <!-- Ajoute un 'id' pour les informations supplémentaires de la planète -->
+            <div id="extra-info"></div>
+        </section>
+
+        <section>
+            <h2>Explication de l'API</h2>
+            <p>Une API (Application Programming Interface) est un ensemble de règles et de définitions qui permet à des logiciels ou applications de communiquer entre eux. Elle facilite l'accès à certaines fonctionnalités ou données d'une autre application, service ou plateforme sans nécessiter une compréhension approfondie de leur mise en œuvre interne.</p>
+            <p>Dans ce code, l'API est utilisée pour récupérer des données de planètes depuis un service externe via la Fetch API, une interface moderne pour effectuer des requêtes réseau. Les requêtes asynchrones permettent de ne pas bloquer l'exécution du script pendant que la réponse est attendue. Une fois la réponse reçue et convertie en JSON, les données sont utilisées pour mettre à jour dynamiquement le contenu de la page web.</p>
+            <p><p>Pour plus d'informations <a href="https://grafikart.fr/tutoriels/javascript-promise-2068">Appel HTTP avec fetch()
+            </a></p></p>
+        </section>
+    </main>
+</body>
+</html>
